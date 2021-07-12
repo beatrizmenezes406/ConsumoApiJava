@@ -5,26 +5,74 @@
 </nav>
 <div class="container">
   <div class="card list-cliente">
-    <h5 class="card-header bg-dark text-white">Lista de Clientes</h5>
-    <div class="card-body">
-      <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Nome</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let cliente of clientes">
-              <td>{{cliente.id}}</td>
-              <td>{{cliente.nome}}</td>
-              <td>
-                <button type="button" class="btn btn-info btn-sm" (click)="editaCliente(cliente)">Editar</button>
-                <button type="button" class="btn btn-danger btn-sm ml-1" (click)="removeClientes(cliente)">Deletar</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col">
+          <h5 class="text-white">Lista de Clientes</h5>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-primary btn-sm ml-1" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapse">Detalhes</button>
+        </div>
+      </div>
+    </div>
+    <div class="accordion" id="accordionExample">
+      
+      <div class="card" *ngFor="let cliente of clientes">
+          <div class="row">
+            <div class="col">
+              <p type="text">{{cliente.nome}}</p>
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-info btn-sm" (click)="editaCliente(cliente)">Editar</button>
+              <button type="button" class="btn btn-danger btn-sm ml-1" (click)="removeClientes(cliente)">Deletar</button>
+            </div>
+            
+          </div>
+          <div id="collapse" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <span>E-mail: {{cliente.email}}</span><br>
+              <span>Telefone: {{cliente.telefone}}</span><br>
+              <span>CPF/CNPJ: {{cliente.cpfcnpj}}</span><br>
+              <span>Endereço: {{cliente.endereco}}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+  </div>
+
+  <div class="modal fade" id="detalheCliente" tabindex="-1" role="dialog" aria-labelledby="detalheClienteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalheClienteLabel">Nome</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="email-detail" class="col-form-label">E-mail</label>
+              <input type="text" class="form-control" id="email-detail" readonly="true">
+            </div>
+            <div class="form-group">
+              <label for="telefone-detail" class="col-form-label">Telefone</label>
+              <input type="text" class="form-control" id="telefone-detail" readonly="true">
+            </div>
+            <div class="form-group">
+              <label for="cpfcnpj-detail" class="col-form-label">CPF/CNPJ</label>
+              <input type="text" class="form-control" id="cpfcnpj-detail" readonly="true">
+            </div>
+            <div class="form-group">
+              <label for="endereco-detail" class="col-form-label">Endereço</label>
+              <input type="text" class="form-control" id="endereco-detail" readonly="true">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -36,12 +84,47 @@
                 <label for="nome">Nome</label>
                 <input type="text" [(ngModel)]="cliente.nome" id="nome" name="nome" #model="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted && model.invalid }" placeholder="Digite o nome">
             </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" [(ngModel)]="cliente.email" id="email" name="email" #model="ngModel" required class="form-control" placeholder="Digite o email">
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone</label>
+                <input type="text" [(ngModel)]="cliente.telefone" id="telefone" name="telefone" #model="ngModel" required class="form-control" placeholder="Digite o telefone">
+            </div>
+            <div class="form-group">
+                <label for="cpfcnpj">CPF/CNPJ</label>
+                <input type="text" [(ngModel)]="cliente.cpfcnpj" id="cpfcnpj" name="cpfcnpj" #model="ngModel" required class="form-control" placeholder="Digite o CPF/CNPJ">
+            </div>
+            <div class="form-group">
+                <label for="endereco">Endereço</label>
+                <input type="text" [(ngModel)]="cliente.endereco" id="endereco" name="endereco" #model="ngModel" required class="form-control" placeholder="Digite o endereço">
+            </div>
             <button type="submit" class="btn btn-primary btn-add-cliente">Salvar</button>
             <button type="reset" class="btn btn-secondary btn-add-cliente" (click)="cleanForm(f)">Cancelar</button>
           </form>
       </div>
     </div>
 </div>
+
+<script type="text/javascript">
+  $('#detalheCliente').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var nome = button.data('nome')
+  var email = button.data('email')
+  var telefone = button.data('telefone')
+  var cpfcnpj = button.data('cpfcnpj')
+  var endereco = button.data('endereco')
+
+  var modal = $(this)
+  modal.find('.modal-title').text(nome)
+  modal.find('.form-control #email-detail').val(email)
+  modal.find('.form-control #telefone-detail').val(telefone)
+  modal.find('.form-control #cpfcnpj-detail').val(cpfcnpj)
+  modal.find('.form-control #endereco-detail').val(endereco)
+})
+
+</script>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->

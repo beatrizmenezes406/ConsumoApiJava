@@ -33,7 +33,7 @@ export class ClienteService {
   }
 
   atualizaCliente(cliente: Cliente): Observable<Cliente> {
-    return this.httpClient.put<Cliente>(this.url, JSON.stringify(cliente), this.httpOptions)
+    return this.httpClient.put<Cliente>(this.url + '/' + cliente.id, JSON.stringify(cliente), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.handleError)

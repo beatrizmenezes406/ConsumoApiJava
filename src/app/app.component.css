@@ -1,3 +1,15 @@
+button {
+    margin:5px;
+    float:right;
+    vertical-align: middle;
+}
+
+p {
+    margin-left: 20px;
+    margin-top: 8px;;
+    font-size: 20px;
+}
+
 .breadcrumb{
     justify-content: center;
 }
